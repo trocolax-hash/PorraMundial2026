@@ -10,5 +10,10 @@ service cloud.firestore {
     match /matches/{matchId} {
       allow read, write: if true; // Open access for the group of friends to insert games, scores, and track bets together
     }
+
+    // Food Votes collection holding one vote per participant
+    match /food_votes/{participantName} {
+      allow read, write: if true; // Group members can vote, read, and overwrite their own vote documents
+    }
   }
 }

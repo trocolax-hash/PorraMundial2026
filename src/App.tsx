@@ -357,7 +357,7 @@ export default function App() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           {/* Main Primary Panel (Responsive) */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className={activeTab === 'leaderboard' ? "lg:col-span-3 space-y-6" : "lg:col-span-2 space-y-6"}>
             
             {activeTab === 'matches' && (
               <div className="space-y-4" id="view-matches-content">
@@ -379,52 +379,63 @@ export default function App() {
                 />
               </div>
             )}
-
+ 
             {activeTab === 'leaderboard' && (
-              <div id="view-leaderboard-content" className="lg:hidden">
+              <div id="view-leaderboard-content" className="space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+                  <div>
+                    <h3 className="text-xl font-bold text-slate-900">Tabla de Clasificación Oficial</h3>
+                    <p className="text-xs text-slate-500">Puntajes actualizados en tiempo real para todos los participantes.</p>
+                  </div>
+                  <span className="text-[11px] text-slate-400 shrink-0 font-bold col-span-1">
+                    Partidos completados: <strong className="text-emerald-605">{completedMatchesCount}</strong>
+                  </span>
+                </div>
                 <Leaderboard stats={stats} totalMatchesPlayed={completedMatchesCount} />
               </div>
             )}
-
+ 
             {activeTab === 'stats' && (
               <div className="space-y-4" id="view-stats-content">
                 <StatsDashboard stats={stats} totalMatches={completedMatchesCount} />
               </div>
             )}
-
+ 
           </div>
-
+ 
           {/* Secondary Panel: Keep persistent Dark Sidebar layout next to the main components */}
-          <div className="hidden lg:block space-y-6 lg:col-span-1" id="desktop-sidebar-leaderboard">
-            
-            {/* Display Leaderboard persistently on desktop */}
-            <Leaderboard stats={stats} totalMatchesPlayed={completedMatchesCount} />
-            
-            {/* Quick reminder box */}
-            <div className="bg-white border border-slate-200 p-4 rounded-xl shadow-sm text-slate-800">
-              <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wide flex items-center gap-1">
-                <Pizza className="text-emerald-600 w-3.5 h-3.5" />
-                Botín Oficial
-              </h4>
-              <p className="text-[11px] text-slate-500 mt-2 leading-relaxed">
-                El comensal estrella del mundial de Raúl, Paco Padre, David, Samuel, Héctor y PacBoy recibirá su invitación gratis a comer en Burger King, McDonalds o Telepizza sufragada equitativamente por los demás.
-              </p>
-              <div className="mt-3 flex gap-2 justify-around text-lg bg-slate-50 border border-slate-100 p-2 rounded-lg">
-                <span title="Burger King">🍔</span>
-                <span title="McDonalds">🍟</span>
-                <span title="Telepizza">🍕</span>
+          {activeTab !== 'leaderboard' && (
+            <div className="hidden lg:block space-y-6 lg:col-span-1" id="desktop-sidebar-leaderboard">
+              
+              {/* Display Leaderboard persistently on desktop */}
+              <Leaderboard stats={stats} totalMatchesPlayed={completedMatchesCount} />
+              
+              {/* Quick reminder box */}
+              <div className="bg-white border border-slate-200 p-4 rounded-xl shadow-sm text-slate-800">
+                <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wide flex items-center gap-1">
+                  <Pizza className="text-emerald-600 w-3.5 h-3.5" />
+                  Botín Oficial
+                </h4>
+                <p className="text-[11px] text-slate-500 mt-2 leading-relaxed">
+                  El comensal estrella del mundial de Raúl, Paco Padre, David, Samuel, Héctor y PacBoy recibirá su invitation gratis a comer en Burger King, McDonalds o Telepizza sufragada equitativamente por los demás.
+                </p>
+                <div className="mt-3 flex gap-2 justify-around text-lg bg-slate-50 border border-slate-100 p-2 rounded-lg">
+                  <span title="Burger King">🍔</span>
+                  <span title="McDonalds">🍟</span>
+                  <span title="Telepizza">🍕</span>
+                </div>
               </div>
+ 
             </div>
-
-          </div>
-
+          )}
+ 
           {/* Helper for small screens */}
           {activeTab !== 'leaderboard' && (
             <div className="lg:hidden mt-8 border-t border-slate-200 pt-6" id="mobile-bottom-leaderboard">
               <Leaderboard stats={stats} totalMatchesPlayed={completedMatchesCount} />
             </div>
           )}
-
+ 
         </div>
 
       </main>

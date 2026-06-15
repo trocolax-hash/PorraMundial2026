@@ -52,12 +52,36 @@
         }
       },
       "required": ["id", "date", "time", "teamA", "teamB", "bets", "isCompleted"]
+    },
+    "FoodVote": {
+      "title": "FoodVote",
+      "description": "Voto de comida de un participante especifico para la porra",
+      "type": "object",
+      "properties": {
+        "participant": {
+          "type": "string",
+          "description": "Name of the participant"
+        },
+        "food": {
+          "type": "string",
+          "description": "Option voted for (e.g., Burger King 🍔, etc.)"
+        },
+        "votedAt": {
+          "type": "integer",
+          "description": "Epoch timestamp when vote was cast"
+        }
+      },
+      "required": ["participant", "food", "votedAt"]
     }
   },
   "firestore": {
     "/matches/{matchId}": {
       "schema": "Match",
       "description": "Stores each World Cup match card and all friend predictions."
+    },
+    "/food_votes/{participantName}": {
+      "schema": "FoodVote",
+      "description": "Coleccion de votos de comida, uno por cada participante."
     }
   }
 }

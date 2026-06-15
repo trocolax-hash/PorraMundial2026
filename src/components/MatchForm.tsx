@@ -60,16 +60,43 @@ export const MatchForm: React.FC<MatchFormProps> = ({ onSave, onCancel, editingM
     }
   }, [editingMatch]);
 
-  const handleBetChange = (participant: ParticipantName, field: 'scoreA' | 'scoreB', val: string) => {
-    // Only allow positive numbers or empty string
-    if (val !== '' && !/^\d+$/.test(val)) return;
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const updateBetAndValidate = (participant: ParticipantName, nextScoreA: string, nextScoreB: string) => {
+    if (nextScoreA !== '' && nextScoreB !== '') {
+      // Check if another participant has this exact combination
+      const isDuplicate = Object.entries(bets).some(([otherName, b]) => {
+        const betValue = b as { scoreA: string; scoreB: string };
+        return otherName !== participant && betValue.scoreA === nextScoreA && betValue.scoreB === nextScoreB;
+      });
+
+      if (isDuplicate) {
+        setErrorMessage('Este resultado ya ha sido elegido por otro jugador. ¡Arriesga con otro!');
+        // Clear both fields of this participant as requested ("los campos deben volver a vaciarse")
+        setBets((prev) => ({
+          ...prev,
+          [participant]: { scoreA: '', scoreB: '' }
+        }));
+        setTimeout(() => setErrorMessage(''), 5000);
+        return;
+      }
+    }
+
     setBets((prev) => ({
       ...prev,
       [participant]: {
-        ...prev[participant],
-        [field]: val
+        scoreA: nextScoreA,
+        scoreB: nextScoreB
       }
     }));
+  };
+
+  const handleBetChange = (participant: ParticipantName, field: 'scoreA' | 'scoreB', val: string) => {
+    // Only allow positive numbers or empty string
+    if (val !== '' && !/^\d+$/.test(val)) return;
+    const nextScoreA = field === 'scoreA' ? val : bets[participant].scoreA;
+    const nextScoreB = field === 'scoreB' ? val : bets[participant].scoreB;
+    updateBetAndValidate(participant, nextScoreA, nextScoreB);
   };
 
   const handleScoreChange = (field: 'A' | 'B', val: string) => {
@@ -81,26 +108,20 @@ export const MatchForm: React.FC<MatchFormProps> = ({ onSave, onCancel, editingM
   const incrementBet = (participant: ParticipantName, field: 'scoreA' | 'scoreB') => {
     const current = bets[participant][field];
     const num = current === '' ? 0 : parseInt(current, 10);
-    setBets((prev) => ({
-      ...prev,
-      [participant]: {
-        ...prev[participant],
-        [field]: String(num + 1)
-      }
-    }));
+    const nextVal = String(num + 1);
+    const nextScoreA = field === 'scoreA' ? nextVal : bets[participant].scoreA;
+    const nextScoreB = field === 'scoreB' ? nextVal : bets[participant].scoreB;
+    updateBetAndValidate(participant, nextScoreA, nextScoreB);
   };
 
   const decrementBet = (participant: ParticipantName, field: 'scoreA' | 'scoreB') => {
     const current = bets[participant][field];
     if (current === '' || current === '0') return;
     const num = parseInt(current, 10);
-    setBets((prev) => ({
-      ...prev,
-      [participant]: {
-        ...prev[participant],
-        [field]: String(num - 1)
-      }
-    }));
+    const nextVal = String(num - 1);
+    const nextScoreA = field === 'scoreA' ? nextVal : bets[participant].scoreA;
+    const nextScoreB = field === 'scoreB' ? nextVal : bets[participant].scoreB;
+    updateBetAndValidate(participant, nextScoreA, nextScoreB);
   };
 
   const incrementRealScore = (field: 'A' | 'B') => {
@@ -346,6 +367,13 @@ export const MatchForm: React.FC<MatchFormProps> = ({ onSave, onCancel, editingM
           <Users className="w-4 h-4" />
           Apuestas de los Participantes (Raúl, Paco Padre, Co.)
         </h3>
+
+        {errorMessage && (
+          <div className="bg-rose-50 border border-rose-250 text-rose-850 rounded-xl p-3 flex items-center gap-2.5 text-xs font-bold animate-bounce" id="duplicate-bet-alert">
+            <ShieldAlert className="w-4 h-4 text-rose-600 shrink-0" />
+            <span>{errorMessage}</span>
+          </div>
+        )}
 
         {isLocked && (
           <div className="bg-slate-100 rounded-xl p-3 flex items-start gap-2 text-slate-600 border border-slate-200/60 transition" id="anti-cheat-lock-alert">
