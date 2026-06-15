@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Match, PARTICIPANTS, ParticipantName } from '../types';
 import { calculateBetPoints, isMatchLocked } from '../utils/points';
+import { formatTeamWithFlag } from '../utils/flags';
 import { Calendar, Clock, Edit2, Trash2, CheckCircle2, AlertCircle, RefreshCw, Lock } from 'lucide-react';
 import { motion } from 'motion/react';
 
@@ -110,7 +111,7 @@ export const MatchList: React.FC<MatchListProps> = ({ matches, onEdit, onDelete 
               <div className="flex justify-between items-center px-2 py-2" id="teams-scores-grid">
                 {/* Team Local */}
                 <div className="flex-1 text-right pr-4 font-extrabold text-slate-800 text-sm sm:text-base truncate">
-                  {match.teamA}
+                  {formatTeamWithFlag(match.teamA)}
                 </div>
 
                 {/* Score badge / status */}
@@ -128,7 +129,7 @@ export const MatchList: React.FC<MatchListProps> = ({ matches, onEdit, onDelete 
 
                 {/* Team Visitor */}
                 <div className="flex-1 text-left pl-4 font-extrabold text-slate-800 text-sm sm:text-base truncate">
-                  {match.teamB}
+                  {formatTeamWithFlag(match.teamB)}
                 </div>
               </div>
 

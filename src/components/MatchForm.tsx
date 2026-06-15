@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Match, ParticipantBet, PARTICIPANTS, ParticipantName } from '../types';
 import { Plus, Check, Calendar, Clock, Sword, Users, ShieldAlert, Award, Lock } from 'lucide-react';
 import { isMatchLocked } from '../utils/points';
+import { formatTeamWithFlag } from '../utils/flags';
 
 interface MatchFormProps {
   onSave: (matchData: Omit<Match, 'id' | 'createdAt'> & { id?: string }) => void;
@@ -283,7 +284,9 @@ export const MatchForm: React.FC<MatchFormProps> = ({ onSave, onCancel, editingM
             <div className="flex items-center gap-6">
               {/* Home goals */}
               <div className="text-center">
-                <span className="text-xs text-slate-500 block mb-1.5 truncate max-w-[100px]">{teamA || 'Local'}</span>
+                <span className="text-xs text-slate-500 block mb-1.5 truncate max-w-[100px]" title={teamA || 'Local'}>
+                  {teamA ? formatTeamWithFlag(teamA) : 'Local'}
+                </span>
                 <div className="flex items-center gap-1.5 justify-center">
                   <button 
                     type="button"
@@ -313,7 +316,9 @@ export const MatchForm: React.FC<MatchFormProps> = ({ onSave, onCancel, editingM
 
               {/* Visitor goals */}
               <div className="text-center">
-                <span className="text-xs text-slate-500 block mb-1.5 truncate max-w-[100px]">{teamB || 'Visitante'}</span>
+                <span className="text-xs text-slate-500 block mb-1.5 truncate max-w-[100px]" title={teamB || 'Visitante'}>
+                  {teamB ? formatTeamWithFlag(teamB) : 'Visitante'}
+                </span>
                 <div className="flex items-center gap-1.5 justify-center">
                   <button 
                     type="button"
@@ -407,7 +412,9 @@ export const MatchForm: React.FC<MatchFormProps> = ({ onSave, onCancel, editingM
               <div className="flex items-center justify-between gap-2 mt-2">
                 {/* Predictions Team A */}
                 <div className="flex flex-col items-center">
-                  <span className="text-[10px] text-slate-500 mb-1 truncate max-w-[65px]">{teamA || 'Local'}</span>
+                  <span className="text-[10px] text-slate-500 mb-1 truncate max-w-[65px]" title={teamA || 'Local'}>
+                    {teamA ? formatTeamWithFlag(teamA) : 'Local'}
+                  </span>
                   <div className="flex items-center gap-1">
                     <button 
                       type="button"
@@ -452,7 +459,9 @@ export const MatchForm: React.FC<MatchFormProps> = ({ onSave, onCancel, editingM
 
                 {/* Predictions Team B */}
                 <div className="flex flex-col items-center">
-                  <span className="text-[10px] text-slate-500 mb-1 truncate max-w-[65px]">{teamB || 'Visitante'}</span>
+                  <span className="text-[10px] text-slate-500 mb-1 truncate max-w-[65px]" title={teamB || 'Visitante'}>
+                    {teamB ? formatTeamWithFlag(teamB) : 'Visitante'}
+                  </span>
                   <div className="flex items-center gap-1">
                     <button 
                       type="button"

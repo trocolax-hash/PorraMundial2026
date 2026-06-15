@@ -1,19 +1,14 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Global default deny
-    match /{document=**} {
-      allow read, write: if false;
-    }
-
     // Matches collection containing scores and participant bets
     match /matches/{matchId} {
-      allow read, write: if true; // Open access for the group of friends to insert games, scores, and track bets together
+      allow read, write: if true;
     }
 
     // Food Votes collection holding one vote per participant
     match /food_votes/{participantName} {
-      allow read, write: if true; // Group members can vote, read, and overwrite their own vote documents
+      allow read, write: if true;
     }
   }
 }
