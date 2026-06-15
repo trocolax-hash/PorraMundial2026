@@ -1,0 +1,63 @@
+{
+  "entities": {
+    "Match": {
+      "title": "Match",
+      "description": "Details of a football match and the bets placed on it by friends.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier of the match"
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date of the match (YYYY-MM-DD)"
+        },
+        "time": {
+          "type": "string",
+          "description": "Time of the match (HH:MM)"
+        },
+        "teamA": {
+          "type": "string",
+          "description": "Name of the first squad"
+        },
+        "teamB": {
+          "type": "string",
+          "description": "Name of the second squad"
+        },
+        "scoreA": {
+          "type": "integer",
+          "description": "Actual goals of team A"
+        },
+        "scoreB": {
+          "type": "integer",
+          "description": "Actual goals of team B"
+        },
+        "bets": {
+          "type": "object",
+          "description": "Map of participant names to their score predictions"
+        },
+        "isCompleted": {
+          "type": "boolean",
+          "description": "True if the match has been played and the official score is filled"
+        },
+        "manualWinner": {
+          "type": "string",
+          "description": "Custom picked overall winner string if manually set"
+        },
+        "createdAt": {
+          "type": "integer",
+          "description": "Epoch timestamp of when the match card was created"
+        }
+      },
+      "required": ["id", "date", "time", "teamA", "teamB", "bets", "isCompleted"]
+    }
+  },
+  "firestore": {
+    "/matches/{matchId}": {
+      "schema": "Match",
+      "description": "Stores each World Cup match card and all friend predictions."
+    }
+  }
+}

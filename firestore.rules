@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Matches collection containing scores and participant bets
+    match /matches/{matchId} {
+      allow read, write: if true; // Open access for the group of friends to insert games, scores, and track bets together
+    }
+  }
+}

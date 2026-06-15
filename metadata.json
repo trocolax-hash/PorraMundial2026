@@ -1,0 +1,8 @@
+{
+  "name": "Porra Mundial 2026",
+  "description": "Plataforma de pronósticos y apuestas del Mundial 2026 para el grupo de amigos: Raúl, Paco Padre, David, Samuel, Héctor y PacBoy, con marcador automático y barra de premios comidistas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
